@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { updateUserData, fetchUserData } from '../repository/userCollection';
-import ApiError from '../entities/ApiError';
+import ApiError from '../functions/src/entities/ApiError';
 
 export const updateUserDataController = async (req: Request, res: Response, next: NextFunction) => {
   try {
