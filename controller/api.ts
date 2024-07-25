@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { updateUserData, fetchUserData } from '../repository/userCollection';
-import ApiError from '../functions/src/entities/ApiError';
+import {ApiError} from '../functions/src/entities/ApiError';
 
 export const updateUserDataController = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -9,7 +9,7 @@ export const updateUserDataController = async (req: Request, res: Response, next
     await updateUserData(userId, data);
     res.status(200).send({ message: 'User data updated successfully' });
   } catch (error) {
-    next(new ApiError('Failed to update user data', 500, error));
+    next(new ApiError(500, 'Failed to update user data' , error));
   }
 };
 
@@ -19,6 +19,6 @@ export const fetchUserDataController = async (req: Request, res: Response, next:
     const userData = await fetchUserData(userId);
     res.status(200).send(userData);
   } catch (error) {
-    next(new ApiError('Failed to fetch user data', 500, error));
+    next(new ApiError(500, 'Failed to fetch user data',  error));
   }
 };

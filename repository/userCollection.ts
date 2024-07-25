@@ -1,4 +1,4 @@
-import { db } from '../config/firebaseConfig';
+import { db } from '../functions/src/config/firebaseConfig';
 
 export const updateUserData = async (userId: string, data: any) => {
   const userRef = db.collection('USERS').doc(userId);

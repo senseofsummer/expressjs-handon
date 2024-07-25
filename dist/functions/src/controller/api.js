@@ -9,29 +9,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchUserDataController = exports.updateUserDataController = void 0;
-const userCollection_1 = require("../repository/userCollection");
-const ApiError_1 = require("../functions/src/entities/ApiError");
-const updateUserDataController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.fetchUser = exports.updateUser = void 0;
+const firebaseConfig_1 = require("../config/firebaseConfig");
+const ApiError_1 = require("../entities/ApiError");
+const updateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userId = req.params.userId;
-        const data = req.body;
-        yield (0, userCollection_1.updateUserData)(userId, data);
+        const { userId, userData } = req.body;
+        yield firebaseConfig_1.db.collection('USERS').doc(userId).set(userData, { merge: true });
         res.status(200).send({ message: 'User data updated successfully' });
     }
     catch (error) {
         next(new ApiError_1.ApiError(500, 'Failed to update user data', error));
     }
 });
-exports.updateUserDataController = updateUserDataController;
-const fetchUserDataController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateUser = updateUser;
+const fetchUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userId = req.params.userId;
-        const userData = yield (0, userCollection_1.fetchUserData)(userId);
-        res.status(200).send(userData);
+        const { userId } = req.params;
+        const userDoc = yield firebaseConfig_1.db.collection('USERS').doc(userId).get();
+        if (!userDoc.exists) {
+            return next(new ApiError_1.ApiError(404, 'User not found'));
+        }
+        res.status(200).send(userDoc.data());
     }
     catch (error) {
         next(new ApiError_1.ApiError(500, 'Failed to fetch user data', error));
     }
 });
-exports.fetchUserDataController = fetchUserDataController;
+exports.fetchUser = fetchUser;

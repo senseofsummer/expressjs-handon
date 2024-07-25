@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fetchUserData = exports.updateUserData = void 0;
-const firebaseConfig_1 = require("../config/firebaseConfig");
+const firebaseConfig_1 = require("../functions/src/config/firebaseConfig");
 const updateUserData = (userId, data) => __awaiter(void 0, void 0, void 0, function* () {
     const userRef = firebaseConfig_1.db.collection('USERS').doc(userId);
     yield userRef.set(data, { merge: true });
